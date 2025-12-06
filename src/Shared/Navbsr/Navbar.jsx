@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { BsSun, BsMoon } from "react-icons/bs";
+import useAuth from "../../Hooks/useAuth";
 
-const Navbar = ({ user, handleLogout }) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("light");
+  const { user, logOut } = useAuth();
+  console.log(user)
+  const location = useLocation();
+  
+  const handleLogOut = () => {
+    logOut().catch((error) => console.log(error));
+  };
 
-  // Load saved theme
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     if (saved) {
@@ -22,6 +29,9 @@ const Navbar = ({ user, handleLogout }) => {
     localStorage.setItem("theme", newTheme);
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
+
+  const btnClasses =
+    "transition ease-in-out delay-75 transform hover:-translate-y-1 hover:scale-105 duration-300 rounded-full px-5 py-2 font-semibold";
 
   return (
     <nav className="bg-base-100 dark:bg-[#0D0D0D] shadow-md fixed w-full z-50 transition-all">
@@ -39,7 +49,6 @@ const Navbar = ({ user, handleLogout }) => {
           <Link to="/public-lessons" className="hover:text-primary font-medium">
             Public Lessons
           </Link>
-
           {user && (
             <>
               <Link
@@ -52,7 +61,7 @@ const Navbar = ({ user, handleLogout }) => {
                 className="hover:text-primary font-medium">
                 My Lessons
               </Link>
-              <Link to="/pricing" className="hover:text-primary font-medium">
+              <Link to="/dashboard/pricing" className="hover:text-primary font-medium">
                 Pricing/Upgrade
               </Link>
             </>
@@ -76,24 +85,12 @@ const Navbar = ({ user, handleLogout }) => {
             <>
               <Link
                 to="/login"
-                className="
-    px-5 py-2 rounded-full font-semibold text-black bg-primary
-    dark:text-black
-    hover:bg-primary/90
-    transition ease-in-out delay-75
-    transform hover:-translate-y-1 hover:scale-105 duration-300
-  ">
+                className={`${btnClasses} text-white bg-primary hover:bg-primary/90`}>
                 Login
               </Link>
-
               <Link
-                to="/register"
-                className="
-    px-5 py-2 rounded-full font-semibold border-2 border-primary text-primary
-    hover:bg-primary/10 dark:hover:bg-primary/20
-    transition ease-in-out delay-75
-    transform hover:-translate-y-1 hover:scale-105 duration-300
-  ">
+                to="/signup"
+                className={`${btnClasses} border-2 border-primary text-primary hover:bg-primary/10 dark:hover:bg-primary/20`}>
                 Signup
               </Link>
             </>
@@ -110,14 +107,19 @@ const Navbar = ({ user, handleLogout }) => {
                 </p>
                 <Link
                   to="/dashboard/profile"
-                  className="block px-4 py-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+                  className="block px-4 py-2 hover:bg-primary/10 dark:hover:bg-primary/20 transition transform hover:-translate-y-1 hover:scale-105">
                   Profile
                 </Link>
                 <Link
                   to="/dashboard"
-                  className="block px-4 py-2 hover:bg-primary/10 dark:hover:bg-primary/20">
+                  className="block px-4 py-2 hover:bg-primary/10 dark:hover:bg-primary/20 transition transform hover:-translate-y-1 hover:scale-105">
                   Dashboard
                 </Link>
+                <button
+                  onClick={handleLogOut}
+                  className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition transform hover:-translate-y-1 hover:scale-105">
+                  Logout
+                </button>
               </div>
             </div>
           )}
@@ -182,15 +184,26 @@ const Navbar = ({ user, handleLogout }) => {
                 Login
               </Link>
               <Link
-                to="/register"
+                to="/signup"
                 className="block px-6 py-3 hover:bg-primary/10 dark:hover:bg-primary/20">
                 Signup
               </Link>
             </>
           ) : (
             <>
+              <Link
+                to="/dashboard/profile"
+                className="block px-6 py-3 hover:bg-primary/10 dark:hover:bg-primary/20">
+                Profile
+              </Link>
+              <Link
+                to="/dashboard"
+                className="block px-6 py-3 hover:bg-primary/10 dark:hover:bg-primary/20">
+                Dashboard
+              </Link>
               <button
-                onClick={handleLogout}>
+                onClick={handleLogOut}
+                className="w-full text-left px-6 py-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30">
                 Logout
               </button>
             </>
