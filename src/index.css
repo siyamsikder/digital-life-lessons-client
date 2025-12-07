@@ -1,31 +1,70 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-@plugin "daisyui/theme" {
-  name: "mytheme";
-  default: true;
+:root {
   --color-primary: #ED8B00;
-  --color-primary-content: #ffffff;
-  --color-secondary: #0a0a0a;
-  --color-base-100: #ffffff;
-  --color-accent: #ED8B00;
+  --color-secondary: #0D0D0D;
+
+  --color-text: #0D0D0D;
+  --color-text-soft: #555;
+  --color-heading: #000;     
+
+  --color-base: #ffffff;  
+  --color-card: #f5f5f5;     
+  --color-border: #e5e5e5;   
 }
+
 
 .dark {
   --color-primary: #ED8B00;
-  --color-primary-content: #000000;
   --color-secondary: #ffffff;
-  --color-base-100: #0D0D0D;
-  --color-accent: #ED8B00;
+
+  --color-text: #ffffff; 
+  --color-text-soft: #cfcfcf;   
+  --color-heading: #ffffff;  
+
+  --color-base: #0D0D0D;       
+  --color-card: #1a1a1a;        
+  --color-border: #333333;
 }
 
-/* :root {
-  --primary: #ED8B00;
-  --transition-speed: 0.3s;
-} */
-
-
+html,
 body {
-  margin: 0;
-  padding: 0;
+  background: var(--color-base);
+  color: var(--color-text);
+  transition: background-color .3s ease, color .3s ease;
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-soft {
+  color: var(--color-text-soft);
+}
+
+.text-heading {
+  color: var(--color-heading);
+}
+
+/* Background colors */
+.bg-base {
+  background-color: var(--color-base);
+}
+
+.bg-card {
+  background: var(--color-card);
+}
+
+.bg-primary {
+  background: var(--color-primary);
+}
+
+/* Borders */
+.border-base {
+  border-color: var(--color-border);
 }
