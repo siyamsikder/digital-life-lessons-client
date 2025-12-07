@@ -7,6 +7,7 @@ import Signup from "../Pages/Auth/Register/Signup";
 import PrivateRout from "./PrivateRout";
 import DashboardLayout from "../Layout/DashboardLayout";
 import AddLesson from "../Pages/Dashboard/AddLesson/AddLesson";
+import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "add-lesson",
         element: <AddLesson/>
+      },
+      {
+        path:"my-lessons",
+        element:<MyLessons/>
       },
     ],
   },
