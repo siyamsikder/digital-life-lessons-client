@@ -1,6 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 const AddLesson = () => {
   const { user } = useAuth();
@@ -11,15 +13,53 @@ const AddLesson = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
 
-    // Example for image file:
-    if (data.image && data.image.length > 0) {
-      console.log("Selected Image:", data.image[0]);
+  const uploadImage = async (imageFile) => {
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    const imgUrl = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_IMAGE_HOST
+    }`;
+    const res = await axios.post(imgUrl, formData);
+    return res.data.data.url;
+  };
+
+  //  Send data API 
+  const mutation = useMutation({
+    mutationFn: async (newLesson) => {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/addLesson`,
+        newLesson
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      alert("Lesson Added Successfully!");
+    },
+  });
+
+  const onSubmit = async (data) => {
+    let imageUrl = "";
+
+    // check if image uploaded
+    if (data.image && data.image[0]) {
+      imageUrl = await uploadImage(data.image[0]);
     }
 
-    // TODO: Send data to backend / Firebase
+    const lessonInfo = {
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      tone: data.tone,
+      visibility: data.visibility,
+      image: imageUrl,
+      author: user?.displayName,
+      email: user?.email,
+      createdAt: new Date(),
+    };
+
+    mutation.mutate(lessonInfo);
   };
 
   return (
@@ -34,7 +74,6 @@ const AddLesson = () => {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Title */}
           <div>
             <label className="block mb-1 text-gray-700 dark:text-gray-200">
               Lesson Title
@@ -46,110 +85,74 @@ const AddLesson = () => {
               className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {errors.title && (
-              <p className="text-red-500 mt-1">{errors.title.message}</p>
+              <p className="text-red-500">{errors.title.message}</p>
             )}
           </div>
 
-          {/* Description */}
           <div>
             <label className="block mb-1 text-gray-700 dark:text-gray-200">
               Full Description / Insight
             </label>
             <textarea
-              placeholder="Write your lesson here..."
               {...register("description", {
                 required: "Description is required",
               })}
-              className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
               rows={6}
+              placeholder="Write your lesson here..."
+              className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             />
-            {errors.description && (
-              <p className="text-red-500 mt-1">{errors.description.message}</p>
-            )}
           </div>
 
-          {/* Category */}
           <div>
-            <label className="block mb-1 text-gray-700 dark:text-gray-200">
-              Category
-            </label>
+            <label className="block mb-1">Category</label>
             <select
               {...register("category", { required: "Category is required" })}
-              className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary">
+              className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary">
               <option value="">Select Category</option>
-              <option value="Personal Growth">Personal Growth</option>
-              <option value="Career">Career</option>
-              <option value="Relationships">Relationships</option>
-              <option value="Mindset">Mindset</option>
-              <option value="Mistakes Learned">Mistakes Learned</option>
+              <option>Personal Growth</option>
+              <option>Career</option>
+              <option>Relationships</option>
+              <option>Mindset</option>
+              <option>Mistakes Learned</option>
             </select>
-            {errors.category && (
-              <p className="text-red-500 mt-1">{errors.category.message}</p>
-            )}
           </div>
 
-          {/* Emotional Tone */}
           <div>
-            <label className="block mb-1 text-gray-700 dark:text-gray-200">
-              Emotional Tone
-            </label>
+            <label className="block mb-1">Emotional Tone</label>
             <select
-              {...register("tone", { required: "Emotional Tone is required" })}
-              className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary">
+              {...register("tone", { required: "Tone is required" })}
+              className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary">
               <option value="">Select Emotional Tone</option>
-              <option value="Motivational">Motivational</option>
-              <option value="Sad">Sad</option>
-              <option value="Realization">Realization</option>
-              <option value="Gratitude">Gratitude</option>
+              <option>Motivational</option>
+              <option>Sad</option>
+              <option>Realization</option>
+              <option>Gratitude</option>
             </select>
-            {errors.tone && (
-              <p className="text-red-500 mt-1">{errors.tone.message}</p>
-            )}
           </div>
 
-          {/* Visibility & Access Level */}
-          <div className="">
-            <div className="">
-              <label className="block mb-1 text-gray-700 dark:text-gray-200">
-                Visibility
-              </label>
-              <select
-                {...register("visibility")}
-                className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary">
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-            </div>
-            {/* <div className="flex-1">
-              <label className="block mb-1 text-gray-700 dark:text-gray-200">
-                Access Level
-              </label>
-              <select
-                {...register("accessLevel")}
-                className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary">
-                <option value="free">Free</option>
-                <option value="premium">Premium</option>
-              </select>
-            </div> */}
+          <div>
+            <label className="block mb-1">Visibility</label>
+            <select
+              {...register("visibility")}
+              className="w-full px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-white">
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
           </div>
 
-          {/* Image Upload */}
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-200 mb-1">
-              Upload Image (Optional)
-            </label>
+          <div>
+            <label className="block mb-1">Upload Image (Optional)</label>
             <input
               type="file"
               accept="image/*"
               {...register("image")}
-              className="file-input file-input-ghost w-full text-gray-700 dark:text-gray-200"
+              className="file-input w-full"
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-primary text-white py-2 rounded-md font-semibold hover:bg-primary/90 transition">
+            className="w-full bg-primary text-white py-2 rounded-md font-semibold hover:bg-primary/90">
             Add Lesson
           </button>
         </form>
