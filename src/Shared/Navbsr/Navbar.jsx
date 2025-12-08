@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router";
+import { Link,} from "react-router";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { BsSun, BsMoon } from "react-icons/bs";
 import useAuth from "../../Hooks/useAuth";
@@ -8,7 +8,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("light");
   const { user, logOut } = useAuth();
-  const location = useLocation();
 
   const handleLogOut = () => {
     logOut().catch((error) => console.log(error));

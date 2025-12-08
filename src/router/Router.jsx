@@ -8,7 +8,8 @@ import PrivateRout from "./PrivateRout";
 import DashboardLayout from "../Layout/DashboardLayout";
 import AddLesson from "../Pages/Dashboard/AddLesson/AddLesson";
 import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
-import PublicLessons from "../Pages/Dashboard/PublicLessons/PublicLessons";
+import LessonDetails from "../Pages/Lessons/LessonDetails";
+import PublicLessons from "../Pages/Lessons/PublicLessons";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -22,8 +23,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "public-lessons",
-        element: <PublicLessons />,
+        element: <PublicLessons/>
       },
+      {
+        path:"lesson/:id",
+        element:<LessonDetails/>
+      }
     ],
   },
 
