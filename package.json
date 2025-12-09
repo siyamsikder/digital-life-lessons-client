@@ -15,6 +15,7 @@
     "axios": "^1.13.2",
     "firebase": "^12.6.0",
     "lucide-react": "^0.556.0",
+    "motion": "^12.23.25",
     "multer": "^2.0.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

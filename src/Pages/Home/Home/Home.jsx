@@ -1,11 +1,13 @@
-import React from 'react';
-import AddLesson from '../../Dashboard/AddLesson/AddLesson';
+import React from "react";
+import AddLesson from "../../Dashboard/AddLesson/AddLesson";
+import HeroSection from "../Banner/HeroSection";
 
 const Home = () => {
-    return (
-        <div>
-        </div>
-    );
+  return (
+    <div>
+      <HeroSection />
+    </div>
+  );
 };
 
 export default Home;
