@@ -145,7 +145,6 @@ const AddLesson = () => {
               <option>Sad</option>
               <option>Realization</option>
               <option>Gratitude</option>
-              <option>Depression</option>
             </select>
           </div>
 

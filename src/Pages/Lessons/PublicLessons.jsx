@@ -8,8 +8,11 @@ import axios from "axios";
 const PublicLessons = () => {
   const navigate = useNavigate();
 
-  // Fetch public lessons with React Query
-  const { data: lessons = [], isLoading, isError } = useQuery({
+  const {
+    data: lessons = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["publicLessons"],
     queryFn: async () => {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/addLesson`);
@@ -17,62 +20,87 @@ const PublicLessons = () => {
     },
   });
 
-  const handleDetails = (lessonId) => {
-    navigate(`/lesson/${lessonId}`);
-  };
+  const handleDetails = (id) => navigate(`/lesson/${id}`);
 
   if (isLoading) return <p className="text-center mt-12">Loading lessons...</p>;
   if (isError) return <p className="text-center mt-12">Failed to load lessons.</p>;
   if (lessons.length === 0) return <p className="text-center mt-12">No public lessons found.</p>;
 
   return (
-    <div className="max-w-6xl my-12 mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="max-w-5xl mx-auto py-12">
+
+      {/* SECTION TITLE */}
+      <h1 className="text-3xl font-bold text-heading">Public Lessons</h1>
+      <div className="w-full h-[1px] bg-border mt-3 mb-10"></div>
+
       {lessons.map((lesson) => (
         <div
           key={lesson._id}
-          className="p-6 rounded-xl bg-card shadow-md hover:shadow-xl transition-all duration-300"
+          className="pb-10 mb-10 border-b border-border"
         >
-          <h2 className="text-2xl font-bold text-heading">{lesson.title}</h2>
+          <div className="flex flex-col md:flex-row gap-6">
 
-          <p className="text-text-soft mt-3 leading-relaxed line-clamp-2">
-            {lesson.description}
-          </p>
+            {/* LEFT SIDE */}
+            <div className="flex-1">
 
-          <div className="flex items-center gap-3 mt-5">
-            <img
-              src={lesson.author?.photoURL || "https://via.placeholder.com/44"}
-              referrerPolicy="no-referrer"
-              alt="User"
-              className="w-11 h-11 rounded-full object-cover border border-border"
-            />
-            <div>
-              <p className="font-semibold text-heading">
-                {lesson.author?.name || "Unknown"}
-                <span className="text-sm text-text-soft ml-1">
-                  ({lesson.accessLevel})
-                </span>
+              {/* Category + Tone */}
+              <p className="text-xs uppercase tracking-wider text-primary font-semibold flex items-center gap-1">
+                <BsTags /> {lesson.category} • {lesson.tone}
               </p>
-              <p className="text-sm text-text-soft">
-                {new Date(lesson.createdAt).toLocaleDateString()}
+
+              {/* Title */}
+              <h2
+                onClick={() => handleDetails(lesson._id)}
+                className="text-2xl md:text-3xl font-bold text-heading mt-2 cursor-pointer hover:underline"
+              >
+                {lesson.title}
+              </h2>
+
+              {/* Description */}
+              <p className="text-text-soft mt-3 leading-relaxed line-clamp-3">
+                {lesson.description}
               </p>
+
+              {/* Author Info */}
+              <div className="flex items-center gap-3 mt-5">
+                <img
+                  src={lesson.author?.photoURL || "https://via.placeholder.com/44"}
+                  referrerPolicy="no-referrer"
+                  alt=""
+                  className="w-11 h-11 rounded-full object-cover border border-border"
+                />
+                <div>
+                  <p className="font-semibold text-heading">
+                    {lesson.author?.name || "Unknown"}{" "}
+                    <span className="text-sm text-text-soft">
+                      ({lesson.accessLevel})
+                    </span>
+                  </p>
+                  <p className="text-sm text-text-soft">
+                    {new Date(lesson.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+
             </div>
+
+            {lesson.image && (
+              <div className="flex-none">
+                <img
+                  src={lesson.image}
+                  className="w-40 h-28 rounded-md object-cover border border-border"
+                  alt=""
+                />
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-wrap gap-3 mt-5">
-            <span className="px-3 py-1 text-sm rounded-full bg-primary text-white flex items-center gap-1">
-              <BsTags /> {lesson.category}
-            </span>
-
-            <span className="px-3 py-1 text-sm rounded-full border border-text-soft text-text-soft flex items-center gap-1">
-              <MdOutlineCategory /> {lesson.tone}
-            </span>
-          </div>
-
+          {/* Read More */}
           <button
             onClick={() => handleDetails(lesson._id)}
-            className="w-full mt-5 bg-primary text-white py-2 rounded-md font-semibold hover:bg-primary/80"
+            className="mt-5 text-primary font-semibold hover:underline"
           >
-            Read more
+            Read more..
           </button>
         </div>
       ))}
