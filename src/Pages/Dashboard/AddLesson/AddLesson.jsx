@@ -122,8 +122,7 @@ const AddLesson = () => {
             <label className="block mb-1 text-soft">Category</label>
             <select
               {...register("category", { required: "Category is required" })}
-              className="w-full px-4 py-2 border border-base rounded-md bg-base text-heading focus:ring-2 focus:ring-primary"
-            >
+              className="w-full px-4 py-2 border border-base rounded-md bg-base text-heading focus:ring-2 focus:ring-primary">
               <option value="">Select Category</option>
               <option>Personal Growth</option>
               <option>Career</option>
@@ -138,8 +137,7 @@ const AddLesson = () => {
             <label className="block mb-1 text-soft">Emotional Tone</label>
             <select
               {...register("tone", { required: "Tone is required" })}
-              className="w-full px-4 py-2 border border-base rounded-md bg-base text-heading focus:ring-2 focus:ring-primary"
-            >
+              className="w-full px-4 py-2 border border-base rounded-md bg-base text-heading focus:ring-2 focus:ring-primary">
               <option value="">Select Emotional Tone</option>
               <option>Motivational</option>
               <option>Sad</option>
@@ -150,7 +148,9 @@ const AddLesson = () => {
 
           {/* Image Upload */}
           <div>
-            <label className="block mb-1 text-soft">Upload Image (Optional)</label>
+            <label className="block mb-1 text-soft">
+              Upload Image (Optional)
+            </label>
             <input
               type="file"
               accept="image/*"
@@ -241,8 +241,7 @@ const AddLesson = () => {
                   watch("visibility") === "private"
                     ? "opacity-50 pointer-events-none"
                     : ""
-                }`}
-              >
+                }`}>
                 <input
                   type="radio"
                   value="premium"
@@ -262,8 +261,7 @@ const AddLesson = () => {
 
           <button
             type="submit"
-            className="w-full bg-primary text-white py-2 rounded-md font-semibold hover:bg-primary/120"
-          >
+            className="w-full bg-primary text-white py-2 rounded-md font-semibold hover:bg-primary/120">
             Add Lesson
           </button>
         </form>

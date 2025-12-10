@@ -1,17 +1,19 @@
 import { useParams } from "react-router";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { BsTags } from "react-icons/bs";
 import { MdOutlineCategory } from "react-icons/md";
+import { useState } from "react";
 
 const LessonDetails = () => {
   const { id } = useParams();
-  console.log(id);
+  const [comment, setComment] = useState("");
 
   const {
     data: lesson = {},
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ["lesson", id],
     queryFn: async () => {
@@ -20,6 +22,18 @@ const LessonDetails = () => {
       );
       return res.data;
     },
+  });
+
+  const likeMutation = useMutation({
+    mutationFn: async () =>
+      axios.patch(`${import.meta.env.VITE_API_URL}/addLesson/like/${id}`),
+    onSuccess: () => refetch(),
+  });
+
+  const favoriteMutation = useMutation({
+    mutationFn: async () =>
+      axios.patch(`${import.meta.env.VITE_API_URL}/addLesson/favorite/${id}`),
+    onSuccess: () => refetch(),
   });
 
   if (isLoading) return <p>Loading lesson...</p>;
@@ -43,10 +57,10 @@ const LessonDetails = () => {
 
       <div className="flex flex-wrap gap-3 mb-6">
         <span className="px-3 py-1 text-sm rounded-full bg-primary text-white flex items-center gap-1">
-          <BsTags/> {lesson.category}
+          <BsTags /> {lesson.category}
         </span>
         <span className="px-3 py-1 text-sm rounded-full border border-text-soft text-text-soft flex items-center gap-1">
-          <MdOutlineCategory/> {lesson.tone}
+          <MdOutlineCategory /> {lesson.tone}
         </span>
       </div>
 
@@ -69,14 +83,15 @@ const LessonDetails = () => {
 
       {/* Community Reactions */}
       <div className="flex gap-4 mb-6">
-        <button className="flex items-center gap-1 px-4 py-2 border rounded-md text-text-soft hover:bg-primary/10">
-          ❤️ {lesson.likes || 0}
+        <button
+          onClick={() => likeMutation.mutate()}
+          className="flex items-center gap-1 px-4 py-2 border rounded-md text-text-soft hover:bg-primary/10">
+          ❤️ Like ({lesson.likes || 0})
         </button>
-        <button className="flex items-center gap-1 px-4 py-2 border rounded-md text-text-soft hover:bg-primary/10">
-          👍 {lesson.upvotes || 0}
-        </button>
-        <button className="flex items-center gap-1 px-4 py-2 border rounded-md text-text-soft hover:bg-primary/10">
-          🔁 {lesson.shares || 0}
+        <button
+          onClick={() => favoriteMutation.mutate()}
+          className="flex items-center gap-1 px-4 py-2 border rounded-md text-text-soft hover:bg-primary/10">
+          🔖 Favorite ({lesson.favorites || 0})
         </button>
       </div>
 
@@ -84,10 +99,15 @@ const LessonDetails = () => {
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-heading mb-3">Comments</h2>
         <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
           className="w-full p-3 border border-border rounded-md bg-card text-text-soft placeholder:text-text-soft focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="Share your thoughts on this lesson..."
           rows={4}
         />
+        <button className="mt-2 px-4 py-2 bg-primary text-white rounded-md font-semibold hover:bg-primary/90">
+          Post Comment
+        </button>
       </div>
 
       {/* Save & Share */}
