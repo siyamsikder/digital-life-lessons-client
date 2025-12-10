@@ -91,7 +91,7 @@ const LessonDetails = () => {
         <button
           onClick={() => favoriteMutation.mutate()}
           className="flex items-center gap-1 px-4 py-2 border rounded-md text-text-soft hover:bg-primary/10">
-          🔖 Favorite ({lesson.favorites || 0})
+          🔖 ({lesson.favorites || 0})
         </button>
       </div>
 
