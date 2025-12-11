@@ -59,11 +59,11 @@ const Navbar = () => {
                 className="hover:text-primary font-medium">
                 My Lessons
               </Link>
-              <Link
-                to="/dashboard/pricing"
+              {/* <Link
+                to="/dashboard/update-lesson"
                 className="hover:text-primary font-medium">
                 Pricing/Upgrade
-              </Link>
+              </Link> */}
             </>
           )}
         </div>

@@ -5,14 +5,18 @@ import { BsTags } from "react-icons/bs";
 import { MdOutlineCategory } from "react-icons/md";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import useAuth from "../../../Hooks/useAuth";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const MyLessons = () => {
   const { user } = useAuth();
+  const navigate=useNavigate()
 
   const {
     data: lessons = [],
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ["myLesson", user?.email],
     enabled: !!user?.email,
@@ -23,6 +27,57 @@ const MyLessons = () => {
       return res.data;
     },
   });
+  const handleLessonDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await axios.delete(`http://localhost:3000/addLesson/${id}`);
+        if (res.data.deletedCount) {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your lesson has been deleted.",
+            icon: "success",
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong.",
+          icon: "error",
+        });
+      }
+    }
+  };
+  const handleToggleVisibility = async (lesson) => {
+    const newStatus = lesson.visibility === "public" ? "private" : "public";
+
+    await axios.patch(`http://localhost:3000/update-visibility/${lesson._id}`, {
+      visibility: newStatus,
+    });
+
+    refetch();
+  };
+
+  // UPDATE ACCESS LEVEL (Free / Premium)
+  const handleToggleAccess = async (lesson) => {
+    const newAccess = lesson.accessLevel === "free" ? "premium" : "free";
+
+    await axios.patch(`http://localhost:3000/update-access/${lesson._id}`, {
+      accessLevel: newAccess,
+    });
+
+    refetch();
+  };
 
   if (isLoading) return <p className="text-center mt-10">Loading...</p>;
   if (isError) return <p className="text-center mt-10 text-red-500">Error!</p>;
@@ -77,11 +132,17 @@ const MyLessons = () => {
             </div>
 
             <div className="flex gap-4 mt-6">
-              <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg">
+              <button
+                onClick={() =>
+                  navigate(`/dashboard/update-lesson/${lesson._id}`)
+                }
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg">
                 <FaEdit /> Edit
               </button>
 
-              <button className="flex items-center gap-2 px-4 py-2 border border-red-400 text-red-500 hover:bg-red-500 hover:text-white rounded-lg">
+              <button
+                onClick={() => handleLessonDelete(lesson._id)}
+                className="flex items-center gap-2 px-4 py-2 border border-red-400 text-red-500 hover:bg-red-500 hover:text-white rounded-lg">
                 <FaTrash /> Delete
               </button>
             </div>

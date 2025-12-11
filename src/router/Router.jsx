@@ -10,6 +10,7 @@ import AddLesson from "../Pages/Dashboard/AddLesson/AddLesson";
 import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
 import LessonDetails from "../Pages/Lessons/LessonDetails";
 import PublicLessons from "../Pages/Lessons/PublicLessons";
+import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
         path: "my-lessons",
         element: <MyLessons />,
       },
+      {
+        path:"update-lesson/:id",
+        element:<UpdateLesson/>
+      }
     ],
   },
 ]);

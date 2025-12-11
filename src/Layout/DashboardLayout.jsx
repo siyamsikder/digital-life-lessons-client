@@ -96,7 +96,7 @@ const DashboardLayout = () => {
             <p className="mt-4 mb-1 text-xs text-soft uppercase">Lessons</p>
             <li><Link className="text-heading" to="/dashboard/add-lesson">Add Lesson</Link></li>
             <li><Link className="text-heading" to="/dashboard/my-lessons">My Lessons</Link></li>
-            <li><Link className="text-heading" to="/dashboard/update-lesson">Update Lesson</Link></li>
+            {/* <li><Link className="text-heading" to="/dashboard/update-lesson">Update Lesson</Link></li> */}
             <li><Link className="text-heading" to="/public-lessons">Public Lessons</Link></li>
 
             <p className="mt-4 mb-1 text-xs text-soft uppercase">Favorites</p>
