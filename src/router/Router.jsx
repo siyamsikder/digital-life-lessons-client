@@ -11,6 +11,8 @@ import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
 import LessonDetails from "../Pages/Lessons/LessonDetails";
 import PublicLessons from "../Pages/Lessons/PublicLessons";
 import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
+import Payment from "../Pages/Dashboard/Payment/Payment";
+import PricingUpgrade from "../Pages/Pricing/PricingUpgrade";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -24,12 +26,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "public-lessons",
-        element: <PublicLessons/>
+        element: <PublicLessons />,
       },
       {
-        path:"lesson/:id",
-        element:<LessonDetails/>
-      }
+        path: "lesson/:id",
+        element: <LessonDetails />,
+      },
+      {
+        path: "/pricing",
+        element: (
+          <PrivateRout>
+            <PricingUpgrade />
+          </PrivateRout>
+        ),
+      },
     ],
   },
 
@@ -72,9 +82,17 @@ export const router = createBrowserRouter([
         element: <MyLessons />,
       },
       {
-        path:"update-lesson/:id",
-        element:<UpdateLesson/>
-      }
+        path: "update-lesson/:id",
+        element: <UpdateLesson />,
+      },
+      {
+        path: "payment",
+        element: (
+          <PrivateRout>
+            <Payment />,
+          </PrivateRout>
+        ),
+      },
     ],
   },
 ]);

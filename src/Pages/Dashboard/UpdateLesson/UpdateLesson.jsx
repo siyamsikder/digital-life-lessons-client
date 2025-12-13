@@ -9,7 +9,6 @@ import Swal from "sweetalert2";
 const UpdateLesson = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [previewImage, setPreviewImage] = useState(null);
 
   const {
@@ -90,8 +89,8 @@ const UpdateLesson = () => {
   if (isLoading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="p-6 bg-base min-h-screen">
-      <div className="max-w-4xl mx-auto bg-card border border-base shadow-md rounded-lg p-6">
+    <div className="p-6 bg-primary min-h-screen">
+      <div className="max-w-4xl mx-auto border border-base shadow-md rounded-lg p-6">
         <h1 className="text-2xl font-bold mb-2 text-heading">Update Lesson</h1>
 
         <p className="mb-6 text-soft">
