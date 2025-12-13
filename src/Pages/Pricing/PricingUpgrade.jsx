@@ -1,11 +1,20 @@
 import React from "react";
 import { FaCrown } from "react-icons/fa";
-import { Link } from "react-router";
-  
- const handlePayment=async()=>{
-  
- }
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
 const PricingUpgrade = () => {
+
+  const handlePayment = useMutation({
+    mutationFn: async () => {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/create-checkout-session`
+      );
+      window.location.href = res.data.url;
+    },
+  });
+
+  
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
       {/* Title */}
@@ -88,19 +97,11 @@ const PricingUpgrade = () => {
           <h3 className="text-5xl font-extrabold text-primary text-center mt-6 mb-6">
             ৳1500
           </h3>
-
-          <form>
-            <Link to="/dashboard/payment">
-              <button
-                type="submit" className="btn btn-primary w-full text-white
-                font-semibold text-lg"> Upgrade to Premium
-              </button>
-            </Link>
-          </form>
-
-          <p className="text-center text-soft text-sm mt-4">
-            Secure Stripe Payment
-          </p>
+            <button
+              onClick={() => handlePayment.mutate()}
+              className="btn btn-primary w-full text-white text-lg">
+              Upgrade to Premium
+            </button>
         </div>
       </div>
     </div>

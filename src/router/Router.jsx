@@ -36,11 +36,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/pricing",
-        element: (
-          <PrivateRout>
-            <PricingUpgrade />
-          </PrivateRout>
-        ),
+        element:<PricingUpgrade />
       },
     ],
   },
@@ -87,14 +83,10 @@ export const router = createBrowserRouter([
         path: "update-lesson/:id",
         element: <UpdateLesson />,
       },
-      {
-        path: "payment",
-        element: (
-          <PrivateRout>
-            <Payment />,
-          </PrivateRout>
-        ),
-      },
+      // {
+      //   path: "payment",
+      //   element: <Payment />,
+      // },
       {
         path:"payment-success",
         element:(

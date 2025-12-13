@@ -58,26 +58,15 @@ const MyLessons = () => {
       }
     }
   };
-  const handleToggleVisibility = async (lesson) => {
-    const newStatus = lesson.visibility === "public" ? "private" : "public";
+  // const handleToggleVisibility = async (lesson) => {
+  //   const newStatus = lesson.visibility === "public" ? "private" : "public";
 
-    await axios.patch(`http://localhost:3000/update-visibility/${lesson._id}`, {
-      visibility: newStatus,
-    });
+  //   await axios.patch(`http://localhost:3000/update-visibility/${lesson._id}`, {
+  //     visibility: newStatus,
+  //   });
 
-    refetch();
-  };
-
-  // UPDATE ACCESS LEVEL (Free / Premium)
-  const handleToggleAccess = async (lesson) => {
-    const newAccess = lesson.accessLevel === "free" ? "premium" : "free";
-
-    await axios.patch(`http://localhost:3000/update-access/${lesson._id}`, {
-      accessLevel: newAccess,
-    });
-
-    refetch();
-  };
+  //   refetch();
+  // };
 
   if (isLoading) return <p className="text-center mt-10">Loading...</p>;
   if (isError) return <p className="text-center mt-10 text-red-500">Error!</p>;
