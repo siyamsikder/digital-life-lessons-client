@@ -1,7 +1,10 @@
 import React from "react";
 import { FaCrown } from "react-icons/fa";
 import { Link } from "react-router";
-
+  
+ const handlePayment=async()=>{
+  
+ }
 const PricingUpgrade = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">

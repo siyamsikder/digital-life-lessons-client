@@ -13,6 +13,8 @@ import PublicLessons from "../Pages/Lessons/PublicLessons";
 import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
 import Payment from "../Pages/Dashboard/Payment/Payment";
 import PricingUpgrade from "../Pages/Pricing/PricingUpgrade";
+import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
+import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel ";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -93,6 +95,22 @@ export const router = createBrowserRouter([
           </PrivateRout>
         ),
       },
+      {
+        path:"payment-success",
+        element:(
+          <PrivateRout>
+            <PaymentSuccess/>
+          </PrivateRout>
+        )
+      },
+      {
+        path:"payment-cancel",
+        element:(
+          <PrivateRout>
+            <PaymentCancel/>
+          </PrivateRout>
+        )
+      }
     ],
   },
 ]);
