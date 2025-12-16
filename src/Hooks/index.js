@@ -10,3 +10,14 @@ export const saveOrUpdateUsers = async (userData) => {
     );
     return data;
 };
+
+
+export const getUser = async (email) => {
+  const { data } = await axios.get(
+    `${import.meta.env.VITE_API_URL}/users/${email}`
+  );
+  return data;
+};
+
+
+

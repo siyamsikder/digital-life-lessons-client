@@ -14,6 +14,7 @@ import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
 import PricingUpgrade from "../Pages/Pricing/PricingUpgrade";
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel ";
+import Profile from "../Pages/Dashboard/profile/Profile";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -82,10 +83,10 @@ export const router = createBrowserRouter([
         path: "update-lesson/:id",
         element: <UpdateLesson />,
       },
-      // {
-      //   path: "payment",
-      //   element: <Payment />,
-      // },
+      {
+        path: "profile",
+        element: <Profile/>,
+      },
       {
         path:"payment-success",
         element:(
