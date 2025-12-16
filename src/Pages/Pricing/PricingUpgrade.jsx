@@ -3,8 +3,6 @@ import { FaCrown } from "react-icons/fa";
 import PricingPage from "../Dashboard/Payment/PricingPage";
 
 const PricingUpgrade = () => {
-
-  
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
       {/* Title */}
@@ -73,7 +71,9 @@ const PricingUpgrade = () => {
             </tr>
           </tbody>
         </table>
-        <PricingPage/>
+      </div>
+      <div className="mt-15">
+        <PricingPage />
       </div>
     </div>
   );
