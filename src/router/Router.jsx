@@ -11,7 +11,6 @@ import MyLessons from "../Pages/Dashboard/MyLessons/MyLessons";
 import LessonDetails from "../Pages/Lessons/LessonDetails";
 import PublicLessons from "../Pages/Lessons/PublicLessons";
 import UpdateLesson from "../Pages/Dashboard/UpdateLesson/UpdateLesson";
-import Payment from "../Pages/Dashboard/Payment/Payment";
 import PricingUpgrade from "../Pages/Pricing/PricingUpgrade";
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel ";

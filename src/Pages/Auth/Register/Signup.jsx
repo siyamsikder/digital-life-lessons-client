@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import useAuth from "../../../Hooks/useAuth";
+import { saveOrUpdateUsers } from "../../../Hooks";
 
 const Signup = () => {
   const {
@@ -15,32 +16,66 @@ const Signup = () => {
   const navigate = useNavigate();
   const { registerUser, googleSignIn, updateUserProfile } = useAuth();
   const imgbbAPIKey = import.meta.env.VITE_IMAGE_HOST;
+ 
+const handleRegistration = (data) => {
+  const photoFile = data.photo[0];
+  const formData = new FormData();
+  formData.append("image", photoFile);
 
-  const handleRegistration = (data) => {
-    const photoFile = data.photo[0];
-    const formData = new FormData();
-    formData.append("image", photoFile);
-    const uploadURL = `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`;
+  const uploadURL = `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`;
 
-    axios
-      .post(uploadURL, formData)
-      .then((imgRes) => {
-        const photoURL = imgRes.data.data.url;
-        return registerUser(data.email, data.password).then(() => {
-          return updateUserProfile({
-            displayName: data.name,
-            photoURL,
-          }).then(() => navigate(location?.state || "/"));
-        });
-      })
-      .catch(console.error);
-  };
+  axios.post(uploadURL, formData)
+    .then(async (imgRes) => {
+      const photoURL = imgRes.data.data.url;
+
+      // 1️⃣ Firebase signup
+      const result = await registerUser(data.email, data.password);
+
+      // 2️⃣ Firebase profile update
+      await updateUserProfile({
+        displayName: data.name,
+        photoURL,
+      });
+
+      const userData = {
+        name: data.name,
+        email: data.email,
+        photoURL,
+        role: "user",
+        isPremium: false,
+        createdAt: new Date(),
+      };
+
+      await saveOrUpdateUsers(userData);
+
+      // 4️⃣ Redirect
+      navigate(location?.state || "/");
+    })
+    .catch(console.error);
+};
+
 
   const handleGoogle = () => {
-    googleSignIn()
-      .then(() => navigate(location?.state || "/"))
-      .catch(console.error);
-  };
+  googleSignIn()
+    .then(async (result) => {
+      const user = result.user;
+
+      const userData = {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "user",
+        isPremium: false,
+        createdAt: new Date(),
+      };
+
+      await saveOrUpdateUsers(userData);
+
+      navigate(location?.state || "/");
+    })
+    .catch(console.error);
+};
+
 
   const inputClasses =
     "w-full border border-base rounded-lg px-3 py-2 focus:outline-none transition bg-base text-heading";

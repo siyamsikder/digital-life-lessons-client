@@ -1,18 +1,8 @@
 import React from "react";
 import { FaCrown } from "react-icons/fa";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import PricingPage from "../Dashboard/Payment/PricingPage";
 
 const PricingUpgrade = () => {
-
-  const handlePayment = useMutation({
-    mutationFn: async () => {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/create-checkout-session`
-      );
-      window.location.href = res.data.url;
-    },
-  });
 
   
   return (
@@ -83,26 +73,7 @@ const PricingUpgrade = () => {
             </tr>
           </tbody>
         </table>
-      </div>
-
-      {/* Payment Card */}
-      <div className="max-w-md mx-auto mt-14">
-        <div className="card shadow-xl bg-card border border-base p-8">
-          <h2 className="text-3xl font-bold text-heading text-center">
-            Premium – Lifetime
-          </h2>
-
-          <p className="text-center text-soft mt-2">One-time payment only</p>
-
-          <h3 className="text-5xl font-extrabold text-primary text-center mt-6 mb-6">
-            ৳1500
-          </h3>
-            <button
-              onClick={() => handlePayment.mutate()}
-              className="btn btn-primary w-full text-white text-lg">
-              Upgrade to Premium
-            </button>
-        </div>
+        <PricingPage/>
       </div>
     </div>
   );

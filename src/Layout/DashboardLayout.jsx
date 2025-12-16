@@ -103,7 +103,7 @@ const DashboardLayout = () => {
             <li><Link className="text-heading" to="/dashboard/favorites">Favorites</Link></li>
 
             <p className="mt-4 mb-1 text-xs text-soft uppercase">Payment</p>
-            <li><Link className="text-heading" to="/dashboard/payment">Pricing / Upgrade</Link></li>
+            {/* <li><Link className="text-heading" to="/dashboard/payment">Pricing / Upgrade</Link></li> */}
             <li><Link className="text-heading" to="/dashboard/payment-success">Payment Success</Link></li>
             <li><Link className="text-heading" to="/dashboard/payment-cancel">Payment Cancel</Link></li>
 
