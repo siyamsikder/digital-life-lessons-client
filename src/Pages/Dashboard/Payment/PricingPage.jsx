@@ -16,8 +16,6 @@ const PricingPage = () => {
 
   return (
     <div>
-      <h1>Premium Plan – Lifetime</h1>
-      <h2>৳1500</h2>
       <button
       className="btn btn-primary w-full text-white text-lg"
        onClick={() => checkout.mutate()}>Upgrade to Premium</button>

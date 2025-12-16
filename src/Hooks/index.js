@@ -20,4 +20,11 @@ export const getUser = async (email) => {
 };
 
 
+export const updateUserProfileDB = async (email, updatedData) => {
+  const { data } = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/users/${email}`,
+    updatedData
+  );
+  return data;
+};
 
