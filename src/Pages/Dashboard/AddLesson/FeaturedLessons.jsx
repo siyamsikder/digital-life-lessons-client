@@ -31,7 +31,7 @@ const FeaturedLessons = () => {
           </p>
 
           <Link
-            to="/lessons"
+            to="/public-lessons"
             className="inline-block px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition"
           >
             Explore Lessons
