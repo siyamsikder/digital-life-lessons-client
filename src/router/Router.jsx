@@ -15,6 +15,7 @@ import PricingUpgrade from "../Pages/Pricing/PricingUpgrade";
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel ";
 import Profile from "../Pages/Dashboard/profile/Profile";
+import Favorites from "../Pages/Dashboard/favorites/favorites";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -36,7 +37,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/pricing",
-        element:<PricingUpgrade />
+        element: <PricingUpgrade />,
       },
     ],
   },
@@ -85,24 +86,28 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile/>,
+        element: <Profile />,
       },
       {
-        path:"payment-success",
-        element:(
+        path: "payment-success",
+        element: (
           <PrivateRout>
-            <PaymentSuccess/>
+            <PaymentSuccess />
           </PrivateRout>
-        )
+        ),
       },
       {
-        path:"payment-cancel",
-        element:(
+        path: "payment-cancel",
+        element: (
           <PrivateRout>
-            <PaymentCancel/>
+            <PaymentCancel />
           </PrivateRout>
-        )
-      }
+        ),
+      },
+      {
+        path: "favorites",
+        element: <Favorites />,
+      },
     ],
   },
 ]);
