@@ -5,7 +5,14 @@ import { BsTags } from "react-icons/bs";
 import { MdOutlineCategory } from "react-icons/md";
 import { useState } from "react";
 import { IoChatbubbleOutline } from "react-icons/io5";
-import { FaRegBookmark, FaBookmark, FaFacebook, FaTwitter, FaWhatsapp, FaRegHandPointUp } from "react-icons/fa";
+import {
+  FaRegBookmark,
+  FaBookmark,
+  FaFacebook,
+  FaTwitter,
+  FaWhatsapp,
+  FaRegHandPointUp,
+} from "react-icons/fa";
 import { PiShareFatLight } from "react-icons/pi";
 import useAuth from "../../Hooks/useAuth";
 import {
@@ -20,21 +27,37 @@ const LessonDetails = () => {
   const [showShare, setShowShare] = useState(false);
   const { user } = useAuth();
 
-  const { data: lesson = {}, isLoading, isError, refetch } = useQuery({
+  const {
+    data: lesson = {},
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["lesson", id],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/addLesson/${id}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/addLesson/${id}`
+      );
       return res.data;
     },
   });
 
+
+  const isLiked = lesson.likes?.includes(user?.email);
+  const isFavorite = lesson.favorites?.includes(user?.email);
+
   const likeMutation = useMutation({
-    mutationFn: async () => axios.patch(`${import.meta.env.VITE_API_URL}/addLesson/like/${id}`),
+    mutationFn: async () =>
+      axios.patch(`${import.meta.env.VITE_API_URL}/addLesson/like/${id}`, {
+        email: user?.email,
+      }),
     onSuccess: () => refetch(),
   });
-
   const favoriteMutation = useMutation({
-    mutationFn: async () => axios.patch(`${import.meta.env.VITE_API_URL}/addLesson/favorite/${id}`),
+    mutationFn: async () =>
+      axios.patch(`${import.meta.env.VITE_API_URL}/addLesson/favorite/${id}`, {
+        email: user?.email,
+      }),
     onSuccess: () => refetch(),
   });
 
@@ -50,7 +73,7 @@ const LessonDetails = () => {
       refetch();
     },
   });
-
+  
   if (isLoading) return <p>Loading lesson...</p>;
   if (isError || !lesson) return <p>Lesson not found.</p>;
 
@@ -87,8 +110,12 @@ const LessonDetails = () => {
           className="w-12 h-12 rounded-full object-cover border border-border"
         />
         <div>
-          <p className="font-semibold text-heading">{lesson.author?.name || "Unknown"}</p>
-          <p className="text-text-soft text-sm">{new Date(lesson.createdAt).toLocaleDateString()}</p>
+          <p className="font-semibold text-heading">
+            {lesson.author?.name || "Unknown"}
+          </p>
+          <p className="text-text-soft text-sm">
+            {new Date(lesson.createdAt).toLocaleDateString()}
+          </p>
         </div>
       </div>
 
@@ -96,10 +123,11 @@ const LessonDetails = () => {
         <div className="flex items-center gap-6 text-text-soft">
           <button
             onClick={() => likeMutation.mutate()}
-            className="flex items-center gap-1 text-text-soft hover:text-primary transition"
-          >
+            className={`flex items-center gap-1 transition ${
+              isLiked ? "text-primary" : "text-text-soft"
+            }`}>
             <FaRegHandPointUp className="text-xl" />
-            <span>{lesson.likes || 0}</span>
+            <span>{lesson.likesCount || 0}</span>
           </button>
 
           <div className="flex items-center gap-1 text-text-soft">
@@ -112,39 +140,43 @@ const LessonDetails = () => {
         <div className="flex items-center gap-5 text-text-soft">
           <button
             onClick={() => favoriteMutation.mutate()}
-            className="hover:text-primary transition flex items-center gap-1"
-          >
-            {lesson.favorites > 0 ? (
+            className="flex items-center gap-1">
+            {isFavorite ? (
               <FaBookmark className="text-xl text-primary" />
             ) : (
-              <FaRegBookmark className="text-xl" />
+              <FaRegBookmark className="text-xl text-text-soft" />
             )}
-            <span>{lesson.favorites || 0}</span>
+            <span>{lesson.favoritesCount || 0}</span>
           </button>
 
           <div className="relative">
             <button
               onClick={() => setShowShare(!showShare)}
-              className="flex items-center gap-1 hover:text-primary transition"
-            >
+              className="flex items-center gap-1 hover:text-primary transition">
               <PiShareFatLight className="text-2xl" />
             </button>
 
             {showShare && (
               <div className="absolute right-0 mt-2 p-2 bg-card border rounded shadow-md flex flex-col gap-2 z-10">
-                <FacebookShareButton url={`https://yourwebsite.com/lesson/${lesson._id}`} quote={lesson.title}>
+                <FacebookShareButton
+                  url={`https://yourwebsite.com/lesson/${lesson._id}`}
+                  quote={lesson.title}>
                   <div className="flex items-center gap-2 hover:bg-blue-100 p-2 rounded cursor-pointer">
                     <FaFacebook className="text-blue-600" /> Facebook
                   </div>
                 </FacebookShareButton>
 
-                <TwitterShareButton url={`https://yourwebsite.com/lesson/${lesson._id}`} title={lesson.title}>
+                <TwitterShareButton
+                  url={`https://yourwebsite.com/lesson/${lesson._id}`}
+                  title={lesson.title}>
                   <div className="flex items-center gap-2 hover:bg-blue-100 p-2 rounded cursor-pointer">
                     <FaTwitter className="text-blue-400" /> Twitter
                   </div>
                 </TwitterShareButton>
 
-                <WhatsappShareButton url={`https://yourwebsite.com/lesson/${lesson._id}`} title={lesson.title}>
+                <WhatsappShareButton
+                  url={`https://yourwebsite.com/lesson/${lesson._id}`}
+                  title={lesson.title}>
                   <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded cursor-pointer">
                     <FaWhatsapp className="text-green-500" /> WhatsApp
                   </div>
@@ -172,8 +204,7 @@ const LessonDetails = () => {
 
         <button
           onClick={() => commentMutation.mutate()}
-          className="mt-3 mb-5 px-4 py-2 bg-primary text-white rounded-lg"
-        >
+          className="mt-3 mb-5 px-4 py-2 bg-primary text-white rounded-lg">
           Post Comment
         </button>
 
@@ -181,18 +212,30 @@ const LessonDetails = () => {
           {lesson.comments?.length > 0 ? (
             <div className="space-y-5 mb-6">
               {lesson.comments.map((c, index) => (
-                <div key={index} className="flex items-start gap-4 p-4 bg-card border rounded-xl shadow-sm">
-                  <img src={c.photoURL} alt="User" className="w-10 h-10 rounded-full object-cover border" />
+                <div
+                  key={index}
+                  className="flex items-start gap-4 p-4 bg-card border rounded-xl shadow-sm">
+                  <img
+                    src={c.photoURL}
+                    alt="User"
+                    className="w-10 h-10 rounded-full object-cover border"
+                  />
                   <div className="flex-1">
                     <p className="font-semibold text-heading">{c.name}</p>
-                    <p className="text-text-soft leading-relaxed">{c.comment}</p>
-                    <p className="text-xs text-text-soft/70 mt-1">{new Date(c.date).toLocaleString()}</p>
+                    <p className="text-text-soft leading-relaxed">
+                      {c.comment}
+                    </p>
+                    <p className="text-xs text-text-soft/70 mt-1">
+                      {new Date(c.date).toLocaleString()}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-text-soft/70">No comments yet. Be the first to comment!</p>
+            <p className="text-text-soft/70">
+              No comments yet. Be the first to comment!
+            </p>
           )}
         </div>
       </div>
