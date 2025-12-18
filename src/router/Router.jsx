@@ -16,6 +16,7 @@ import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel ";
 import Profile from "../Pages/Dashboard/profile/Profile";
 import Favorites from "../Pages/Dashboard/favorites/favorites";
+import NotFound from "../Components/NotFound/NotFound";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -109,5 +110,10 @@ export const router = createBrowserRouter([
         element: <Favorites />,
       },
     ],
+    
+  },
+  {
+    path: "*",
+    element: <NotFound/>,
   },
 ]);
