@@ -21,6 +21,9 @@ const DashboardLayout = () => {
     localStorage.setItem("theme", newTheme);
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
+    const handleLogOut = () => {
+    logOut().catch((error) => console.log(error));
+  };
 
   return (
     <div className="drawer lg:drawer-open bg-base text-text">
@@ -114,7 +117,7 @@ const DashboardLayout = () => {
           {/* Logout Button */}
           <div className="p-4 mt-auto">
             <button
-              onClick={logOut}
+              onClick={handleLogOut}
               className="btn w-full bg-red-500 hover:bg-red-600 text-white btn-sm">
               Logout
             </button>
