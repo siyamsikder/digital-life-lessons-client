@@ -4,6 +4,7 @@ import { BsTags } from "react-icons/bs";
 import { MdOutlineCategory } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 const PublicLessons = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const PublicLessons = () => {
 
   const handleDetails = (id) => navigate(`/lesson/${id}`);
 
-  if (isLoading) return <p className="text-center mt-12">Loading lessons...</p>;
+  if (isLoading) return <LoadingPage/>
   if (isError) return <p className="text-center mt-12">Failed to load lessons.</p>;
   if (lessons.length === 0) return <p className="text-center mt-12">No public lessons found.</p>;
 

@@ -68,7 +68,7 @@ const MyLessons = () => {
   //   refetch();
   // };
 
-  if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+  if (isLoading) return <p className="text-center mt-10 taxt-primary">Loading...</p>;
   if (isError) return <p className="text-center mt-10 text-red-500">Error!</p>;
 
   return (

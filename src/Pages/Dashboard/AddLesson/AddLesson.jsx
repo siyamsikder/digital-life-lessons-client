@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const AddLesson = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const {
     register,
@@ -70,6 +70,7 @@ const AddLesson = () => {
 
     mutation.mutate(lessonInfo);
   };
+  if(loading) return <LoadingPage/>;
 
   return (
     <div className="p-6 bg-base min-h-screen">

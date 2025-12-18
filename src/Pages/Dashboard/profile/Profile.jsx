@@ -63,10 +63,10 @@ const Profile = () => {
   };
 
   if (!dbUser)
-    return <span className="loading loading-infinity loading-lg"></span>;
+    return <p className="text-center mt-10 taxt-primary">Loading...</p>;
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-base rounded-xl shadow">
+    <div className="max-w-xl mx-auto mt-15 p-6 bg-base rounded-xl shadow">
       <h2 className="text-2xl font-bold mb-6 text-heading">Edit Profile</h2>
 
       <form onSubmit={handleUpdate} className="space-y-4">
