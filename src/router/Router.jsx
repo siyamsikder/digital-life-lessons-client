@@ -18,6 +18,7 @@ import Profile from "../Pages/Dashboard/profile/Profile";
 import Favorites from "../Pages/Dashboard/favorites/favorites";
 import NotFound from "../Components/NotFound/NotFound";
 import HowItWorks from "../Pages/Home/HowItWorks/HowItWorks";
+import Overview from "../Pages/Dashboard/DashboardHome/Overview";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -76,7 +77,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h2>Dashboard Home</h2>,
+        element: <Overview/>,
       },
       {
         path: "add-lesson",
