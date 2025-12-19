@@ -17,6 +17,7 @@ import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancel ";
 import Profile from "../Pages/Dashboard/profile/Profile";
 import Favorites from "../Pages/Dashboard/favorites/favorites";
 import NotFound from "../Components/NotFound/NotFound";
+import HowItWorks from "../Pages/Home/HowItWorks/HowItWorks";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -37,9 +38,13 @@ export const router = createBrowserRouter([
         element: <LessonDetails />,
       },
       {
-        path: "/pricing",
+        path: "pricing",
         element: <PricingUpgrade />,
       },
+      {
+        path:"how-it-works",
+        element:<HowItWorks/>
+      }
     ],
   },
 

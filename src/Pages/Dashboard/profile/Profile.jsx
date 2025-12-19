@@ -3,12 +3,14 @@ import axios from "axios";
 import { getUser, updateUserProfileDB } from "../../../Hooks";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import useRole from "../../../Hooks/useRole";
 
 const Profile = () => {
   const { user, updateUserProfile } = useAuth();
   const [dbUser, setDbUser] = useState(null);
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState(null);
+  const { role, isRoleLoading } = useRole();
 
   const imgbbAPIKey = import.meta.env.VITE_IMAGE_HOST;
 
@@ -67,42 +69,51 @@ const Profile = () => {
 
   return (
     <div className="max-w-xl mx-auto mt-15 p-6 bg-base rounded-xl shadow">
-      <h2 className="text-2xl font-bold mb-6 text-heading">Edit Profile</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-heading">Edit Profile</h2>
+
+        <span className="px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-600">
+          {role?.toUpperCase()}
+        </span>
+      </div>
 
       <form onSubmit={handleUpdate} className="space-y-4">
-        {/* Photo */}
-        <div className="flex items-center gap-4">
+        {/* Profile Photo */}
+        <div className="space-y-3">
           <img
             src={dbUser.photoURL}
-            className="w-20 h-20 rounded-full object-cover border"
+            className="w-24 h-24 rounded-full object-cover border mx-auto"
           />
+        </div>
+        {/* img */}
+        <div>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setPhoto(e.target.files[0])}
-            className="file-input file-input-sm "
+            className="file-input bg-base file-input-sm w-full"
           />
         </div>
 
         {/* Name */}
         <div>
-          <label className="block text-sm text-soft mb-1">Name</label>
+          <label className="block text-sm mb-1">Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-base rounded-lg px-3 py-2 bg-base"
+            className="w-full border rounded-lg px-3 py-2 bg-base"
           />
         </div>
 
-        {/* Email (Read-only) */}
+        {/* Email */}
         <div>
-          <label className="block text-sm text-soft mb-1">Email</label>
+          <label className="block text-sm mb-1">Email</label>
           <input
             type="email"
             value={dbUser.email}
             disabled
-            className="w-full border border-base rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
+            className="w-full border rounded-lg px-3 py-2 bg-gray-100"
           />
         </div>
 

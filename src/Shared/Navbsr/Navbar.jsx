@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link,} from "react-router";
+import { Link } from "react-router";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { BsSun, BsMoon } from "react-icons/bs";
 import useAuth from "../../Hooks/useAuth";
@@ -44,6 +44,9 @@ const Navbar = () => {
           <Link to="/" className="hover:text-primary font-medium">
             Home
           </Link>
+          <Link to="/how-it-works" className="hover:text-primary font-medium">
+            How It Works
+          </Link>
           <Link to="/public-lessons" className="hover:text-primary font-medium">
             Public Lessons
           </Link>
@@ -59,9 +62,7 @@ const Navbar = () => {
                 className="hover:text-primary font-medium">
                 My Lessons
               </Link>
-              <Link
-                to="/pricing"
-                className="hover:text-primary font-medium">
+              <Link to="/pricing" className="hover:text-primary font-medium">
                 Pricing/Upgrade
               </Link>
             </>

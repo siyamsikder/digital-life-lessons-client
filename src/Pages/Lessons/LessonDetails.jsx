@@ -5,6 +5,7 @@ import { BsTags } from "react-icons/bs";
 import { MdOutlineCategory } from "react-icons/md";
 import { useState } from "react";
 import { IoChatbubbleOutline } from "react-icons/io5";
+import { GoReport } from "react-icons/go";
 import {
   FaRegBookmark,
   FaBookmark,
@@ -26,6 +27,7 @@ const LessonDetails = () => {
   const [comment, setComment] = useState("");
   const [showShare, setShowShare] = useState(false);
   const { user } = useAuth();
+  const [showReport, setShowReport] = useState(false);
 
   const {
     data: lesson = {},
@@ -41,7 +43,6 @@ const LessonDetails = () => {
       return res.data;
     },
   });
-
 
   const isLiked = lesson.likes?.includes(user?.email);
   const isFavorite = lesson.favorites?.includes(user?.email);
@@ -73,7 +74,7 @@ const LessonDetails = () => {
       refetch();
     },
   });
-  
+
   if (isLoading) return <p>Loading lesson...</p>;
   if (isError || !lesson) return <p>Lesson not found.</p>;
 
@@ -137,7 +138,7 @@ const LessonDetails = () => {
         </div>
 
         {/* Right side: Save + Share */}
-        <div className="flex items-center gap-5 text-text-soft">
+        <div className="flex items-center gap-4 text-text-soft">
           <button
             onClick={() => favoriteMutation.mutate()}
             className="flex items-center gap-1">
@@ -149,13 +150,18 @@ const LessonDetails = () => {
             <span>{lesson.favoritesCount || 0}</span>
           </button>
 
-          <div className="relative">
-            <button
-              onClick={() => setShowShare(!showShare)}
-              className="flex items-center gap-1 hover:text-primary transition">
-              <PiShareFatLight className="text-2xl" />
-            </button>
+          <button
+            onClick={() => setShowShare(!showShare)}
+            className="flex items-center gap-1 hover:text-primary transition">
+            <PiShareFatLight className="text-2xl" />
+          </button>
+          <button
+            onClick={() => setShowReport(true)}
+            className="flex items-center gap-1 hover:text-primary transition">
+            <GoReport />
+          </button>
 
+          <div className="relative">
             {showShare && (
               <div className="absolute right-0 mt-2 p-2 bg-card border rounded shadow-md flex flex-col gap-2 z-10">
                 <FacebookShareButton
