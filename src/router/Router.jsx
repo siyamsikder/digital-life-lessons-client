@@ -45,7 +45,23 @@ export const router = createBrowserRouter([
       {
         path:"how-it-works",
         element:<HowItWorks/>
-      }
+      },
+      {
+        path: "payment-success",
+        element: (
+          <PrivateRout>
+            <PaymentSuccess />
+          </PrivateRout>
+        ),
+      },
+      {
+        path: "payment-cancel",
+        element: (
+          <PrivateRout>
+            <PaymentCancel />
+          </PrivateRout>
+        ),
+      },
     ],
   },
 
@@ -94,22 +110,6 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
-      },
-      {
-        path: "payment-success",
-        element: (
-          <PrivateRout>
-            <PaymentSuccess />
-          </PrivateRout>
-        ),
-      },
-      {
-        path: "payment-cancel",
-        element: (
-          <PrivateRout>
-            <PaymentCancel />
-          </PrivateRout>
-        ),
       },
       {
         path: "favorites",

@@ -1,21 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router";
 import axios from "axios";
 import { FaCheckCircle, FaCrown } from "react-icons/fa";
+import { useQueryClient } from "@tanstack/react-query";
+import useAuth from "../../../Hooks/useAuth";
 
 const PaymentSuccess = () => {
   const location = useLocation();
-
+  const calledRef = useRef(false);
+  const queryClient = useQueryClient();
+  const {user}=useAuth
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const sessionId = params.get("session_id");
 
-    if (sessionId) {
-      axios.patch(
-        `http://localhost:3000/payment-success?session_id=${sessionId}`
-      );
-    }
+    if (!sessionId) return;
+    if (calledRef.current) return;
+
+    calledRef.current = true;
+
+    const verifyPayment = async () => {
+      try {
+        const res = await axios.patch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/payment-success?session_id=${sessionId}`
+        );
+        if (res.data.success) {
+          queryClient.invalidateQueries(["isPremium", user?.email]);
+          queryClient.invalidateQueries(["user", user?.email]);
+        }
+
+        console.log("Payment verified:", res.data);
+      } catch (error) {
+        console.error("Payment verification failed:", error);
+      }
+    };
+
+    verifyPayment();
   }, [location.search]);
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-card border border-base rounded-xl shadow-xl p-8 text-center">

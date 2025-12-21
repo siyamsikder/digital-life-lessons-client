@@ -7,15 +7,27 @@ import useAuth from "../../../Hooks/useAuth";
 const PremiumCard = () => {
   const { user } = useAuth();
 
-  const checkout = useMutation({
+ const checkout = useMutation({
     mutationFn: async () => {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/create-checkout-session`,
-        { senderEmail: user.email }
-      );
-      window.location.href = res.data.url;
+        if (!user?.email) {
+            Swal.fire("Error", "Please login first!", "error");
+            return;
+        }
+
+        const res = await axios.post(
+            `${import.meta.env.VITE_API_URL}/create-checkout-session`,
+            { senderEmail: user.email } 
+        );
+
+        if (res.data.url) {
+            window.location.href = res.data.url;
+        }
     },
-  });
+    onError: (error) => {
+        Swal.fire("Error", "Something went wrong. Try again!", "error");
+        console.error(error);
+    }
+});
 
   const handleUpgrade = () => {
     Swal.fire({

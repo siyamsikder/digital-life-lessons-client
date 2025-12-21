@@ -3,12 +3,16 @@ import { Link } from "react-router";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { BsSun, BsMoon } from "react-icons/bs";
 import useAuth from "../../Hooks/useAuth";
+import usePremium from "../../Pages/Dashboard/Payment/usePremium";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("light");
   const { user, logOut } = useAuth();
+  const { isPremium } = usePremium();
 
+  console.log(isPremium);
+  
   const handleLogOut = () => {
     logOut().catch((error) => console.log(error));
   };
@@ -62,9 +66,18 @@ const Navbar = () => {
                 className="hover:text-primary font-medium">
                 My Lessons
               </Link>
-              <Link to="/pricing" className="hover:text-primary font-medium">
-                Pricing/Upgrade
-              </Link>
+
+              {/* Premium Badge */}
+              {isPremium && (
+                <span className="badge badge-warning ml-2">Premium</span>
+              )}
+
+              {/* Upgrade link (only for non-premium users) */}
+              {!isPremium && (
+                <Link to="/pricing" className="hover:text-primary font-medium">
+                  Pricing / Upgrade
+                </Link>
+              )}
             </>
           )}
         </div>
