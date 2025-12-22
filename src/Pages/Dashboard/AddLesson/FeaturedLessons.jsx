@@ -1,9 +1,15 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import usePremium from "../Payment/usePremium";
+import useAuth from "../../../Hooks/useAuth";
 
 const FeaturedLessons = () => {
+  const { isPremium } = usePremium();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const { data: lessons = [] } = useQuery({
     queryKey: ["featuredLessons"],
     queryFn: async () => {
@@ -13,6 +19,18 @@ const FeaturedLessons = () => {
   });
 
   const featured = lessons.slice(0, 2);
+
+  const handleLessonClick = (lesson) => {
+    if (!user) {
+      navigate("/auth/signup");
+      return;
+    }
+    if (lesson.accessLevel === "premium" && !isPremium) {
+      navigate("/pricing");
+    } else {
+      navigate(`/lesson/${lesson._id}`);
+    }
+  };
 
   return (
     <section className="bg-base py-20">
@@ -50,7 +68,8 @@ const FeaturedLessons = () => {
           {featured.map((lesson) => (
             <div
               key={lesson._id}
-              className="bg-card rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+              className="bg-card rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              onClick={() => handleLessonClick(lesson)}>
               {/* Image */}
               {lesson.image ? (
                 <img
@@ -78,11 +97,15 @@ const FeaturedLessons = () => {
                   {new Date(lesson.createdAt).toDateString()}
                 </p>
 
-                <Link
-                  to={`/lesson/${lesson._id}`}
-                  className="text-primary font-semibold hover:underline">
-                  read more →
-                </Link>
+                {lesson.accessLevel === "premium" && !isPremium ? (
+                  <p className="text-red-500 font-semibold">
+                    Premium Content – Upgrade to access
+                  </p>
+                ) : (
+                  <span className="text-primary font-semibold hover:underline">
+                    read more →
+                  </span>
+                )}
               </div>
             </div>
           ))}

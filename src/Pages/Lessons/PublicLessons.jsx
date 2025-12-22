@@ -1,13 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { BsTags } from "react-icons/bs";
-import { MdOutlineCategory } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
+import usePremium from "../Dashboard/Payment/usePremium";
+import useAuth from "../../Hooks/useAuth";
 
 const PublicLessons = () => {
   const navigate = useNavigate();
+  const { isPremium } = usePremium();
+  const { user } = useAuth();
 
   const {
     data: lessons = [],
@@ -21,9 +24,20 @@ const PublicLessons = () => {
     },
   });
 
-  const handleDetails = (id) => navigate(`/lesson/${id}`);
+  const handleDetails = (lesson) => {
+    if (!user) {
+      navigate("/auth/signup");
+      
+      return;
+    }
+    if (lesson.accessLevel === "premium" && !isPremium) {
+      navigate("/pricing");
+    } else {
+      navigate(`/lesson/${lesson._id}`);
+    }
+  };
 
-  if (isLoading) return <LoadingPage/>
+  if (isLoading) return <LoadingPage />;
   if (isError) return <p className="text-center mt-12">Failed to load lessons.</p>;
   if (lessons.length === 0) return <p className="text-center mt-12">No public lessons found.</p>;
 
@@ -51,7 +65,7 @@ const PublicLessons = () => {
 
               {/* Title */}
               <h2
-                onClick={() => handleDetails(lesson._id)}
+                onClick={() => handleDetails(lesson)}
                 className="text-2xl md:text-3xl font-bold text-heading mt-2 cursor-pointer hover:underline"
               >
                 {lesson.title}
@@ -61,6 +75,13 @@ const PublicLessons = () => {
               <p className="text-text-soft mt-3 leading-relaxed line-clamp-3">
                 {lesson.description}
               </p>
+
+              {/* Premium Message */}
+              {lesson.accessLevel === "premium" && !isPremium && (
+                <p className="text-red-500 font-semibold mt-2">
+                  Premium Content – Upgrade to access
+                </p>
+              )}
 
               {/* Author Info */}
               <div className="flex items-center gap-3 mt-5">
@@ -98,7 +119,7 @@ const PublicLessons = () => {
 
           {/* Read More */}
           <button
-            onClick={() => handleDetails(lesson._id)}
+            onClick={() => handleDetails(lesson)}
             className="mt-5 text-primary font-semibold hover:underline"
           >
             Read more..

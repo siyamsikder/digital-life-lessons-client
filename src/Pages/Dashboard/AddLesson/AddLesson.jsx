@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import usePremium from "../Payment/usePremium";
+import Swal from "sweetalert2";
 
 const AddLesson = () => {
   const { user, loading } = useAuth();
+  const { isPremium } = usePremium();
 
   const {
     register,
@@ -38,15 +41,31 @@ const AddLesson = () => {
       return res.data;
     },
     onSuccess: () => {
-      alert("Lesson Added Successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Lesson Published 🎉",
+        text: "Your life lesson has been added successfully!",
+        confirmButtonText: "Awesome!",
+        confirmButtonColor: "#ED8B00",
+        background: "#ffffff",
+      });
       reset();
     },
-    onError: (error) => {
-      console.log(error);
+    onError: () => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops!",
+        text: "Something went wrong. Please try again.",
+        confirmButtonColor: "#ED8B00",
+      });
     },
   });
 
   const onSubmit = async (data) => {
+    if (data.accessLevel === "premium" && !isPremium) {
+      alert("Only premium users can add premium lessons!");
+      return;
+    }
     let imageUrl = "";
 
     if (data.image && data.image[0]) {
@@ -70,7 +89,7 @@ const AddLesson = () => {
 
     mutation.mutate(lessonInfo);
   };
-  if(loading) return <LoadingPage/>;
+  if (loading) return <LoadingPage />;
 
   return (
     <div className="p-6 bg-base min-h-screen">
@@ -239,7 +258,7 @@ const AddLesson = () => {
               {/* PREMIUM OPTION */}
               <label
                 className={`flex items-center gap-3 cursor-pointer border border-base p-3 rounded-lg ${
-                  watch("visibility") === "private"
+                  watch("visibility") === "private" || !isPremium
                     ? "opacity-50 pointer-events-none"
                     : ""
                 }`}>
@@ -248,13 +267,19 @@ const AddLesson = () => {
                   value="premium"
                   {...register("accessLevel")}
                   className="radio"
-                  disabled={watch("visibility") === "private"}
+                  disabled={watch("visibility") === "private" || !isPremium}
                 />
                 <div>
                   <h3 className="font-semibold text-heading">Premium</h3>
                   <p className="text-soft text-sm">
                     Only visible to Premium users
                   </p>
+
+                  {!isPremium && (
+                    <p className="text-red-500 text-xs mt-1">
+                      Upgrade to Premium to publish premium lessons
+                    </p>
+                  )}
                 </div>
               </label>
             </div>

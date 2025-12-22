@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { Link, useNavigate } from "react-router";
+import { FaBars, FaCrown, FaTimes } from "react-icons/fa";
 import { BsSun, BsMoon } from "react-icons/bs";
 import useAuth from "../../Hooks/useAuth";
 import usePremium from "../../Pages/Dashboard/Payment/usePremium";
@@ -10,11 +10,16 @@ const Navbar = () => {
   const [theme, setTheme] = useState("light");
   const { user, logOut } = useAuth();
   const { isPremium } = usePremium();
+  const navigate = useNavigate();
 
-  console.log(isPremium);
-  
   const handleLogOut = () => {
-    logOut().catch((error) => console.log(error));
+    logOut()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -66,24 +71,22 @@ const Navbar = () => {
                 className="hover:text-primary font-medium">
                 My Lessons
               </Link>
-
-              {/* Premium Badge */}
-              {isPremium && (
-                <span className="badge badge-warning ml-2">Premium</span>
-              )}
-
-              {/* Upgrade link (only for non-premium users) */}
-              {!isPremium && (
-                <Link to="/pricing" className="hover:text-primary font-medium">
-                  Pricing / Upgrade
-                </Link>
-              )}
+              <Link to="/pricing" className="hover:text-primary font-medium">
+                Pricing / Upgrade
+              </Link>
             </>
           )}
         </div>
 
         {/* Right Section */}
         <div className="hidden md:flex items-center space-x-4">
+          <span className="block">
+            {isPremium && (
+              <span className="inline-flex items-center gap-1 text-xs font-bold px-4 py-2 rounded-full bg-primary text-secondary">
+                <FaCrown /> Premium
+              </span>
+            )}
+          </span>
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
@@ -159,6 +162,14 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-base shadow-md border-t border-base">
+          <p className="px-6 py-3 text-secondary font-semibold">
+            {user.displayName}
+            {isPremium && (
+              <span className="ml-2 text-xs font-bold px-2 py-0.5 rounded-full bg-primary text-white shadow">
+                👑 Premium
+              </span>
+            )}
+          </p>
           <Link to="/" className="block px-6 py-3 hover:bg-primary/10">
             Home
           </Link>

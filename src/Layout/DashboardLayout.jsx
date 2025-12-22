@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 import { BsMoon, BsSun } from "react-icons/bs";
 import useAuth from "../Hooks/useAuth";
+import usePremium from "../Pages/Dashboard/Payment/usePremium";
+import { FaCrown } from "react-icons/fa";
 
 const DashboardLayout = () => {
   const [theme, setTheme] = useState("light");
   const { user, logOut } = useAuth();
+  const navigate = useNavigate();
+  const { isPremium } = usePremium();
 
   // Load saved theme
   useEffect(() => {
@@ -21,8 +25,14 @@ const DashboardLayout = () => {
     localStorage.setItem("theme", newTheme);
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
-    const handleLogOut = () => {
-    logOut().catch((error) => console.log(error));
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -31,15 +41,24 @@ const DashboardLayout = () => {
 
       {/* Main Content */}
       <div className="drawer-content flex flex-col">
-
         {/* Top Navbar */}
         <div className="navbar px-4 flex justify-between bg-base border-b border-base">
           <div className="flex items-center gap-3">
-            <label htmlFor="dashboard-drawer" className="btn btn-ghost lg:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6"
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16" />
+            <label
+              htmlFor="dashboard-drawer"
+              className="btn btn-ghost lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </label>
 
@@ -48,9 +67,14 @@ const DashboardLayout = () => {
               LifeNotes
             </Link>
           </div>
-
           <div className="flex items-center gap-5">
-
+            <span className="block">
+              {isPremium && (
+                <span className="inline-flex items-center gap-1 text-xs font-bold px-4 py-2 rounded-full bg-primary text-secondary">
+                  <FaCrown /> Premium
+                </span>
+              )}
+            </span>
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -61,7 +85,6 @@ const DashboardLayout = () => {
                 <BsSun className="text-primary" size={22} />
               )}
             </button>
-
             {/* User Avatar */}
             {user && (
               <div className="avatar cursor-pointer">
@@ -84,7 +107,6 @@ const DashboardLayout = () => {
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
 
         <aside className="w-64 bg-card text-heading border-r border-base shadow min-h-full flex flex-col">
-
           {/* Sidebar Header */}
           <div className="p-5 border-b border-base">
             <h2 className="text-xl font-bold text-heading">Dashboard</h2>
@@ -93,20 +115,48 @@ const DashboardLayout = () => {
 
           {/* Menu */}
           <ul className="menu p-4 gap-1">
-            <li><Link className="text-heading" to="/dashboard">Overview</Link></li>
-            <li><Link className="text-heading" to="/">Home</Link></li>
+            <li>
+              <Link className="text-heading" to="/dashboard">
+                Overview
+              </Link>
+            </li>
+            <li>
+              <Link className="text-heading" to="/">
+                Home
+              </Link>
+            </li>
 
             <p className="mt-4 mb-1 text-xs text-soft uppercase">Lessons</p>
-            <li><Link className="text-heading" to="/dashboard/add-lesson">Add Lesson</Link></li>
-            <li><Link className="text-heading" to="/dashboard/my-lessons">My Lessons</Link></li>
+            <li>
+              <Link className="text-heading" to="/dashboard/add-lesson">
+                Add Lesson
+              </Link>
+            </li>
+            <li>
+              <Link className="text-heading" to="/dashboard/my-lessons">
+                My Lessons
+              </Link>
+            </li>
             {/* <li><Link className="text-heading" to="/dashboard/update-lesson">Update Lesson</Link></li> */}
-            <li><Link className="text-heading" to="/public-lessons">Public Lessons</Link></li>
+            <li>
+              <Link className="text-heading" to="/public-lessons">
+                Public Lessons
+              </Link>
+            </li>
 
             <p className="mt-4 mb-1 text-xs text-soft uppercase">Favorites</p>
-            <li><Link className="text-heading" to="/dashboard/favorites">Favorites</Link></li>
+            <li>
+              <Link className="text-heading" to="/dashboard/favorites">
+                Favorites
+              </Link>
+            </li>
 
             <p className="mt-4 mb-1 text-xs text-soft uppercase">Profile</p>
-            <li><Link className="text-heading" to="/dashboard/profile">Profile Settings</Link></li>
+            <li>
+              <Link className="text-heading" to="/dashboard/profile">
+                Profile Settings
+              </Link>
+            </li>
           </ul>
 
           {/* Logout Button */}

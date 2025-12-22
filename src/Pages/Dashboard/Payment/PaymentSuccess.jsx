@@ -59,9 +59,9 @@ const PaymentSuccess = () => {
           Premium Access Activated
         </div>
 
-        <Link to="/dashboard">
+        <Link to="/">
           <button className="btn btn-primary w-full text-white text-lg">
-            Go to Dashboard
+            Go to Home
           </button>
         </Link>
       </div>

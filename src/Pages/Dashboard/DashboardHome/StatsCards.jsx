@@ -9,10 +9,12 @@ import {
 } from "react-icons/fa";
 import useAuth from "../../../Hooks/useAuth";
 import useRole from "../../../Hooks/useRole";
+import usePremium from "../Payment/usePremium";
 
 const StatsCards = () => {
   const { user } = useAuth();
   const { role, isRoleLoading } = useRole();
+  const { isPremium } = usePremium();
 
   const { data: lessons = [], isLoading } = useQuery({
     queryKey: ["dashboard-lessons", user?.email],
@@ -62,12 +64,12 @@ const StatsCards = () => {
         value={totalFavorites}
         color="bg-purple-500"
       />
-
+      
       <StatCard
-        icon={role === "premium" ? <FaCrown /> : <FaClock />}
+        icon={isPremium ? <FaCrown /> : <FaClock />}
         title="Account Type"
-        value={role === "premium" ? "Premium" : "Free"}
-        color={role === "premium" ? "bg-yellow-500" : "bg-gray-500"}
+        value={isPremium ? "Premium 👑" : "Free"}
+        color={isPremium ? "bg-yellow-500" : "bg-gray-500"}
       />
     </div>
   );
