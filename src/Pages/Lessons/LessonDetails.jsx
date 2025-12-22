@@ -21,6 +21,7 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
+import ReportLesson from "./ReportLesson";
 
 const LessonDetails = () => {
   const { id } = useParams();
@@ -160,6 +161,9 @@ const LessonDetails = () => {
             className="flex items-center gap-1 hover:text-primary transition">
             <GoReport />
           </button>
+          {showReport && (
+            <ReportLesson lesson={lesson} close={() => setShowReport(false)} />
+          )}
 
           <div className="relative">
             {showShare && (
