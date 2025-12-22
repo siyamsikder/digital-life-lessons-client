@@ -4,11 +4,12 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router";
 import usePremium from "../Payment/usePremium";
 import useAuth from "../../../Hooks/useAuth";
+import LoadingPage from "../../../Components/LoadingPage/LoadingPage";
 
 const FeaturedLessons = () => {
   const { isPremium } = usePremium();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const { data: lessons = [] } = useQuery({
     queryKey: ["featuredLessons"],
@@ -31,6 +32,7 @@ const FeaturedLessons = () => {
       navigate(`/lesson/${lesson._id}`);
     }
   };
+  if (loading) return <LoadingPage/>;
 
   return (
     <section className="bg-base py-20">

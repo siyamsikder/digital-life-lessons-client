@@ -20,10 +20,7 @@ const ReportLesson = ({ lesson, close }) => {
       details: form.details.value,
     };
 
-    await axios.post(
-      `${import.meta.env.VITE_API_URL}/reports`,
-      reportInfo
-    );
+    await axios.post(`${import.meta.env.VITE_API_URL}/reports`, reportInfo);
 
     Swal.fire({
       icon: "success",
@@ -40,7 +37,6 @@ const ReportLesson = ({ lesson, close }) => {
       <form
         onSubmit={handleReport}
         className="bg-base p-6 rounded-lg w-full max-w-md">
-        
         <h2 className="text-xl font-bold mb-4">Report Lesson</h2>
 
         <select

@@ -22,6 +22,7 @@ import {
   WhatsappShareButton,
 } from "react-share";
 import ReportLesson from "./ReportLesson";
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 const LessonDetails = () => {
   const { id } = useParams();
@@ -33,7 +34,6 @@ const LessonDetails = () => {
   const {
     data: lesson = {},
     isLoading,
-    isError,
     refetch,
   } = useQuery({
     queryKey: ["lesson", id],
@@ -76,8 +76,7 @@ const LessonDetails = () => {
     },
   });
 
-  if (isLoading) return <p>Loading lesson...</p>;
-  if (isError || !lesson) return <p>Lesson not found.</p>;
+  if (isLoading) return <LoadingPage/>;
 
   return (
     <div className="max-w-4xl mx-auto my-12 p-6 bg-base rounded-lg">

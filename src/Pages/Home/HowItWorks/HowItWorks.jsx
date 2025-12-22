@@ -4,8 +4,14 @@ import {
   FaHeart,
   FaGlobeAsia,
 } from "react-icons/fa";
+import useAuth from "../../../Hooks/useAuth";
+import LoadingPage from "../../../Components/LoadingPage/LoadingPage";
 
 const HowItWorks = () => {
+  const { loading } = useAuth();
+
+  if (loading) return <LoadingPage/>;
+
   return (
     <section className="max-w-6xl mx-auto px-6 py-20">
       {/* Section Header */}

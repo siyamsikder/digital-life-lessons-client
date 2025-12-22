@@ -7,22 +7,22 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import LoadingPage from "../../../Components/LoadingPage/LoadingPage";
 
 const MyLessons = () => {
   const { user } = useAuth();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const {
     data: lessons = [],
     isLoading,
-    isError,
     refetch,
   } = useQuery({
     queryKey: ["myLesson", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/myLesson?email=${user?.email}`
+        `https://digital-life-lessons-server-nine.vercel.app/myLesson?email=${user?.email}`
       );
       return res.data;
     },
@@ -40,7 +40,7 @@ const MyLessons = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axios.delete(`http://localhost:3000/addLesson/${id}`);
+        const res = await axios.delete(`https://digital-life-lessons-server-nine.vercel.app/addLesson/${id}`);
         if (res.data.deletedCount) {
           refetch();
           Swal.fire({
@@ -58,18 +58,9 @@ const MyLessons = () => {
       }
     }
   };
-  // const handleToggleVisibility = async (lesson) => {
-  //   const newStatus = lesson.visibility === "public" ? "private" : "public";
 
-  //   await axios.patch(`http://localhost:3000/update-visibility/${lesson._id}`, {
-  //     visibility: newStatus,
-  //   });
-
-  //   refetch();
-  // };
-
-  if (isLoading) return <p className="text-center mt-10 taxt-primary">Loading...</p>;
-  if (isError) return <p className="text-center mt-10 text-red-500">Error!</p>;
+  if (isLoading)
+    return <LoadingPage/>
 
   return (
     <div className="min-h-screen px-4 mt-10">

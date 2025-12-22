@@ -1,6 +1,11 @@
 import React from "react";
+import useAuth from "../../../Hooks/useAuth";
 
 const HeroSection = () => {
+  const { loading } = useAuth();
+
+  if (loading) return <LoadingPage />;
+
   return (
     <section className="max-w-6xl mx-auto px-6 py-15 text-center">
       {/* Title */}
