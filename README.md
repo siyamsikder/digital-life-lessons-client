@@ -1,6 +1,8 @@
 # LifeNotes – Capture Your Life Lessons, Simply
 
 **Live Site URL:** [https://life-notes.netlify.app](https://life-notes.netlify.app)
+**Server Repository:** [https://github.com/siyamsikder/petnest-server-side](https://github.com/siyamsikder/petnest-server-side)
+
 
 ## 💡 Project Overview
 LifeNotes is a digital sanctuary designed for individuals to document, preserve, and share the wisdom they gather throughout their life journey. It bridges the gap between personal reflection and community learning, allowing users to organize their insights, discover lessons from others, and grow through shared experiences.
