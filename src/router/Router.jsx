@@ -19,6 +19,7 @@ import Favorites from "../Pages/Dashboard/favorites/favorites";
 import NotFound from "../Components/NotFound/NotFound";
 import HowItWorks from "../Pages/Home/HowItWorks/HowItWorks";
 import Overview from "../Pages/Dashboard/DashboardHome/Overview";
+import ReportedLessons from "../Pages/Lessons/ReportedLessons";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -43,8 +44,8 @@ export const router = createBrowserRouter([
         element: <PricingUpgrade />,
       },
       {
-        path:"how-it-works",
-        element:<HowItWorks/>
+        path: "how-it-works",
+        element: <HowItWorks />,
       },
       {
         path: "payment-success",
@@ -93,7 +94,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Overview/>,
+        element: <Overview />,
       },
       {
         path: "add-lesson",
@@ -115,11 +116,14 @@ export const router = createBrowserRouter([
         path: "favorites",
         element: <Favorites />,
       },
+      {
+        path: "admin/reported-lessons",
+        element: <ReportedLessons/>,
+      },
     ],
-    
   },
   {
     path: "*",
-    element: <NotFound/>,
+    element: <NotFound />,
   },
 ]);

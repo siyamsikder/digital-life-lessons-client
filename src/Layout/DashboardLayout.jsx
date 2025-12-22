@@ -4,12 +4,14 @@ import { BsMoon, BsSun } from "react-icons/bs";
 import useAuth from "../Hooks/useAuth";
 import usePremium from "../Pages/Dashboard/Payment/usePremium";
 import { FaCrown } from "react-icons/fa";
+import useRole from "../Hooks/useRole";
 
 const DashboardLayout = () => {
   const [theme, setTheme] = useState("light");
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
   const { isPremium } = usePremium();
+  const { role, isRoleLoading } = useRole();
 
   // Load saved theme
   useEffect(() => {
@@ -150,6 +152,17 @@ const DashboardLayout = () => {
                 Favorites
               </Link>
             </li>
+
+            {!isRoleLoading && role === "admin" && (
+              <>
+                <p className="mt-4 mb-1 text-xs uppercase text-soft">Admin</p>
+                <li>
+                  <Link to="/dashboard/admin/reported-lessons">
+                     Reported Lessons
+                  </Link>
+                </li>
+              </>
+            )}
 
             <p className="mt-4 mb-1 text-xs text-soft uppercase">Profile</p>
             <li>
