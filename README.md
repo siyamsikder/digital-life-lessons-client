@@ -1,6 +1,7 @@
 # LifeNotes – Capture Your Life Lessons, Simply
 
 **Live Site URL:** [https://life-notes.netlify.app](https://life-notes.netlify.app)
+
 **Server Repository:** [https://github.com/siyamsikder/petnest-server-side](https://github.com/siyamsikder/petnest-server-side)
 
 
